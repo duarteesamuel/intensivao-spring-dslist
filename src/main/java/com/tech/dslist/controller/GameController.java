@@ -1,5 +1,6 @@
 package com.tech.dslist.controller;
 
+import com.tech.dslist.dto.GameDTO;
 import com.tech.dslist.dto.GameMinDTO;
 import com.tech.dslist.entity.Game;
 import com.tech.dslist.service.GameService;
@@ -7,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,5 +26,13 @@ public class GameController {
 
         return ResponseEntity.status(HttpStatus.OK).body(gameService
                 .getAllGames());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<GameDTO> getById(@PathVariable Long id){
+
+        GameDTO body = gameService.findById(id);
+
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 }
