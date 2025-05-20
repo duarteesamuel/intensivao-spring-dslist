@@ -26,19 +26,18 @@ public class Game {
     @Column(name = "game_genre")
     private String genre;
 
-    @Column(name = "game_platform")
-    private String platforms;
-
     @Column(name = "game_score")
     private Double score;
 
-    @Column(name = "img_url")
+    @Column(name = "game_platforms")
+    private String platforms;
+
     private String imgUrl;
 
-    @Column(name = "short_description")
+    @Column(columnDefinition = "TEXT")
     private String shortDescription;
 
-    @Column(name = "long_description")
+    @Column(columnDefinition = "TEXT")
     private String longDescription;
 
 }
