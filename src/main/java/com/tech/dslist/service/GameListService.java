@@ -2,6 +2,7 @@ package com.tech.dslist.service;
 
 import com.tech.dslist.dto.GameListDTO;
 import com.tech.dslist.dto.GameMinDTO;
+import com.tech.dslist.exception.GameNotFound;
 import com.tech.dslist.repository.GameListRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,16 @@ public class GameListService {
 
     @Transactional(readOnly = true)
     public List<GameListDTO> getAllGameLists(){
-        return gameListRepository.findAll().stream().map(GameListDTO::new)
-                .collect(Collectors.toList());
+
+        List<GameListDTO> games = gameListRepository.findAll()
+                .stream()
+                .map(GameListDTO::new)
+                .toList();
+
+        if(games.isEmpty()){
+            throw new GameNotFound("No game list found.");
+        }
+
+        return games;
     }
 }

@@ -3,6 +3,7 @@ package com.tech.dslist.service;
 import com.tech.dslist.dto.GameDTO;
 import com.tech.dslist.dto.GameMinDTO;
 import com.tech.dslist.exception.GameNotFound;
+import com.tech.dslist.projection.GameMinProjection;
 import com.tech.dslist.repository.GameRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,8 +21,32 @@ public class GameService {
 
     @Transactional(readOnly = true)
     public List<GameMinDTO> getAllGames(){
-        return gameRepository.findAll().stream().map(GameMinDTO::new)
-                .collect(Collectors.toList());
+
+        List<GameMinDTO> games = gameRepository.findAll()
+                .stream()
+                .map(GameMinDTO::new)
+                .toList();
+
+        if(games.isEmpty()){
+            throw new GameNotFound("No games found");
+        }
+
+        return games;
+    }
+
+    @Transactional(readOnly = true)
+    public List<GameMinDTO> findGameByList(Long listId){
+
+        List<GameMinDTO> games = gameRepository.searchByList(listId)
+                .stream()
+                .map(GameMinDTO::new)
+                .toList();
+
+        if(games.isEmpty()){
+            throw new GameNotFound("No games found for list ID " + listId);
+        }
+
+        return games;
     }
 
     @Transactional(readOnly = true)
@@ -31,4 +56,6 @@ public class GameService {
                 gameRepository.findById(id).orElseThrow(() -> new GameNotFound("Game with id " + id + " not found."))
         );
     }
+
+
 }
